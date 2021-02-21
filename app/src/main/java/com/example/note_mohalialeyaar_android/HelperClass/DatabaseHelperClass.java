@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelperClass extends SQLiteOpenHelper {
 
 
-    private Context context;
+    private final Context context;
     private static final String DATABASE_NAME = "NotesDatabase";
     public static final int VERSION = 1;
     public static final String NOTE_TABLE = "note_table";
@@ -33,17 +33,21 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE IF NOT EXISTS " + NOTE_TABLE + "(" +
-                COLUMN_ID + "INTEGER NOT NULL ," +
+                COLUMN_ID + "INTEGER NOT NULL CONSTRAINT note_pk PRIMARY KEY AUTOINCREMENT ," +
                 COLUMN_TITLE + " TEXT NOT NULL, " +
-                COLUMN_DESCRIPTION + "TEXT NOT NULL," +
-                COLUMN_DATE + " TEXT NOT NULL," +
-                COLUMN_IMAGE + "BLOB NOT NULL," +
-                COLUMN_LOCATION + "TEXT NOT NULL," +
-                COLUMN_ADDRESS + "TEXT NOT NULL," +
-                COLUMN_FOLDER_ID + "INTEGER NOT NULL," +
-                "FOREIGN KEY(" + COLUMN_FOLDER_ID + ") REFERENCES " + FOLDER_TABLE + "(" + COLUMN_FOLDER_ID + ") ON UPDATE CASCADE ON DELETE CASCADE," +
-                "PRIMARY KEY(" + COLUMN_ID + ")" +
-                ");";
+                COLUMN_DESCRIPTION + "TEXT ," +
+                COLUMN_DATE + " TEXT ," +
+                COLUMN_IMAGE + "BLOB ," +
+                COLUMN_LOCATION + "TEXT ," +
+                COLUMN_ADDRESS + "TEXT ," +
+                COLUMN_FOLDER_ID + "INTEGER ," +
+                "FOREIGN KEY(" + COLUMN_FOLDER_ID + ") REFERENCES " + FOLDER_TABLE + "(" + COLUMN_FOLDER_ID + ") ON UPDATE CASCADE ON DELETE CASCADE" +
+                " );";
+
+        String foldertableQuery = "CREATE TABLE IF NOT EXISTS " +FOLDER_TABLE+ "("+
+                COLUMN_FOLDER_ID + "INTEGER NOT NULL CONSTRAINT folder_pk PRIMARY KEY AUTOINCREMENT, "+COLUMN_FOLDER_NAME+ "TEXT NOT NULL UNIQUE );";
+
+        db.execSQL(foldertableQuery);
 
         db.execSQL(query);
 

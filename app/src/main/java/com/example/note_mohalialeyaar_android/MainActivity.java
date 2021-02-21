@@ -1,14 +1,18 @@
 package com.example.note_mohalialeyaar_android;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,9 +33,41 @@ public class MainActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+                View view = layoutInflater.inflate(R.layout.activity_add_folder_actvity,null,false);
+                builder.setView(view).create().show();
 
-                Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
-                startActivity(addNoteIntent);
+                EditText etFolderName = view.findViewById(R.id.folderName);
+                Button btnAddFolder = view.findViewById(R.id.addFolderBtn);
+
+                String folderName = etFolderName.getText().toString();
+
+               btnAddFolder.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       if (folderName.isEmpty())
+                       {
+                           etFolderName.setError("PLease add foldr name");
+                           etFolderName.requestFocus();
+                           return;
+                       }
+
+
+
+
+
+
+
+                   }
+               });
+
+
+
+
+
+
+
             }
         });
 
