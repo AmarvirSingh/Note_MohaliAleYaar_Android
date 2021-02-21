@@ -25,33 +25,33 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     public static final String COLUMN_FOLDER_ID = "folder_id";
 
 
-    public DatabaseHelperClass( @Nullable Context context) {
+    public DatabaseHelperClass(@Nullable Context context) {
         super(context, DATABASE_NAME, null, VERSION);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-  /*  String query = "CREATE TABLE IF NOT EXISTS "+ NOTE_TABLE + "(" +
-            COLUMN_ID + "INTEGER NOT NULL ," +
-            COLUMN_TITLE + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + "TEXT NOT NULL,"+
-            COLUMN_DATE + " TEXT NOT NULL," +
-            COLUMN_IMAGE + "BLOB NOT NULL," +
-            COLUMN_LOCATION + "TEXT NOT NULL," +
-            COLUMN_ADDRESS +"TEXT NOT NULL," +
-            COLUMN_FOLDER_ID + "INTEGER NOT NULL," +
-            "FOREIGN KEY(" + COLUMN_FOLDER_ID + ") REFERENCES "+ FOLDER_TABLE + "(" + COLUMN_FOLDER_ID + ") ON UPDATE CASCADE ON DELETE CASCADE," +
-            "PRIMARY KEY("+COLUMN_ID+")" +
-            ");";
+        String query = "CREATE TABLE IF NOT EXISTS " + NOTE_TABLE + "(" +
+                COLUMN_ID + "INTEGER NOT NULL ," +
+                COLUMN_TITLE + " TEXT NOT NULL, " +
+                COLUMN_DESCRIPTION + "TEXT NOT NULL," +
+                COLUMN_DATE + " TEXT NOT NULL," +
+                COLUMN_IMAGE + "BLOB NOT NULL," +
+                COLUMN_LOCATION + "TEXT NOT NULL," +
+                COLUMN_ADDRESS + "TEXT NOT NULL," +
+                COLUMN_FOLDER_ID + "INTEGER NOT NULL," +
+                "FOREIGN KEY(" + COLUMN_FOLDER_ID + ") REFERENCES " + FOLDER_TABLE + "(" + COLUMN_FOLDER_ID + ") ON UPDATE CASCADE ON DELETE CASCADE," +
+                "PRIMARY KEY(" + COLUMN_ID + ")" +
+                ");";
 
-        db.execSQL(query);*/
+        db.execSQL(query);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS "+NOTE_TABLE+"");
+        db.execSQL("DROP TABLE IF EXISTS " + NOTE_TABLE + "");
     }
 }
