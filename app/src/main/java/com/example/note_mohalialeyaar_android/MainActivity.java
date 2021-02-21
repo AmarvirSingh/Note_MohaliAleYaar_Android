@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,10 +19,13 @@ import android.widget.Toast;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton addBtn;
     RecyclerView recyclerView;
+    ArrayList<String>  folderNames =  new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         addBtn = findViewById(R.id.addBtn);
         DatabaseHelperClass helper = new DatabaseHelperClass(getApplicationContext());
+
+
+        folderNames = helper.getFolderName();
+
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this,)
+        //
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
