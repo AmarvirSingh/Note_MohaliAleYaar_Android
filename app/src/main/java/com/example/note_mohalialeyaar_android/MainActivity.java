@@ -43,21 +43,20 @@ public class MainActivity extends AppCompatActivity {
                 EditText etFolderName = view.findViewById(R.id.folderName);
                 Button btnAddFolder = view.findViewById(R.id.addFolderBtn);
 
-                String folderName = etFolderName.getText().toString();
+
 
                btnAddFolder.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
 
+                       String folderName = etFolderName.getText().toString();
 
-
-                      /* if (etFolderName.getText().toString().isEmpty())
+                       if (etFolderName.getText().toString().isEmpty())
                        {
                            etFolderName.setError("PLease add foldr name");
                            etFolderName.requestFocus();
                            return;
                        }
-*/
 
 
                        boolean bool = helper.insertFolder(folderName);

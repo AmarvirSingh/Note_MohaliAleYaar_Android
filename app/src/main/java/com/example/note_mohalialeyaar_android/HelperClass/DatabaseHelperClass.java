@@ -48,7 +48,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
                 " );";
 
         String foldertableQuery = "CREATE TABLE IF NOT EXISTS " +FOLDER_TABLE+ "("+
-                COLUMN_FOLDER_ID + " INTEGER NOT NULL CONSTRAINT folder_pk PRIMARY KEY AUTOINCREMENT, "+COLUMN_FOLDER_NAME+ " TEXT NOT NULL );";
+                COLUMN_FOLDER_ID + " INTEGER NOT NULL CONSTRAINT folder_pk PRIMARY KEY AUTOINCREMENT, "+COLUMN_FOLDER_NAME+ " TEXT NOT NULL UNIQUE );";
 
         db.execSQL(foldertableQuery);
 
