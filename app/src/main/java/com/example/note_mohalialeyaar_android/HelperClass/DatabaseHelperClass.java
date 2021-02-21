@@ -2,12 +2,15 @@ package com.example.note_mohalialeyaar_android.HelperClass;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 import com.example.note_mohalialeyaar_android.FolderModelClass;
+
+import java.util.ArrayList;
 
 public class DatabaseHelperClass extends SQLiteOpenHelper {
 
@@ -80,6 +83,24 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
             return false;
         }
 
+    }
+
+    public ArrayList<String> getFolderName()
+    {
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM "+FOLDER_TABLE+";",null);
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        if(cursor != null)
+        {
+            cursor.moveToFirst();
+            do {
+                arrayList.add(cursor.getInt(0),cursor.getString(1));
+            }
+            while(cursor.moveToNext());
+        }
+
+        return arrayList;
     }
 
 }
