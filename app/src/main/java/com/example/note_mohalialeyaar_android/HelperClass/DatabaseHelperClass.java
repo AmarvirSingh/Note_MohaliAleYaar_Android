@@ -58,4 +58,6 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + NOTE_TABLE + "");
     }
+
+    public boolean insertFolder ()
 }
