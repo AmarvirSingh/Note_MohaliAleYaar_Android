@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Delete button clicked", Toast.LENGTH_SHORT).show();
                 break;
             case(R.id.folderBtn):
-                Toast.makeText(this, "Show Folder Butoon Clicked ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Show Folder Button Clicked ", Toast.LENGTH_SHORT).show();
                 break;
             case (R.id.search):
                 Toast.makeText(this, "Search Button Clicked ", Toast.LENGTH_SHORT).show();
