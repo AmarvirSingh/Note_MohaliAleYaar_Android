@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv);
         addBtn = findViewById(R.id.addBtn);
+        DatabaseHelperClass helper = new DatabaseHelperClass(getApplicationContext());
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,12 +48,25 @@ public class MainActivity extends AppCompatActivity {
                btnAddFolder.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       if (folderName.isEmpty())
+
+
+
+                      /* if (etFolderName.getText().toString().isEmpty())
                        {
                            etFolderName.setError("PLease add foldr name");
                            etFolderName.requestFocus();
                            return;
                        }
+*/
+
+
+                       boolean bool = helper.insertFolder(folderName);
+                       if (bool)
+                           Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
+                       else
+                           Toast.makeText(MainActivity.this, "not added", Toast.LENGTH_SHORT).show();
+
+
 
 
 
