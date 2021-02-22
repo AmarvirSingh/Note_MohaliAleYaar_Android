@@ -3,6 +3,7 @@ package com.example.note_mohalialeyaar_android.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.note_mohalialeyaar_android.AddNoteActivity;
 import com.example.note_mohalialeyaar_android.FolderModelClass;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
 import com.example.note_mohalialeyaar_android.MainActivity;
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHolder> implements Filterable {
 
-   Context context;
+    public Context context;
     ArrayList<FolderModelClass> arrayList;
     DatabaseHelperClass helper;
     ArrayList<FolderModelClass> filerList;
@@ -60,9 +62,10 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
     @Override
     public void onBindViewHolder(@NonNull RVViewHolder holder, int position) {
 
-        final String name = filerList.get(position).getFolderName();
+         String name = filerList.get(position).getFolderName();
         final int id = filerList.get(position).getFolderId();
         Log.i("tag ", "onBindViewHolder: " + name);
+
 
         final FolderModelClass modelClass = filerList.get(position);
 
@@ -72,7 +75,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             @Override
             public void onClick(View v) {
                 Log.i("Folder activity ", "onClick: "+ String.valueOf(modelClass.getFolderId()));
-                deleteFolder(modelClass);
+                deleteFolder(modelClass,position);
             }
         });
 
@@ -81,7 +84,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
 
     }
 
-    private void deleteFolder(FolderModelClass modelClass) {
+    private void deleteFolder(FolderModelClass modelClass, int position) {
 
         AlertDialog.Builder  builder = new AlertDialog.Builder(context);
         builder.setTitle("Are You Sure ??");
@@ -94,7 +97,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
 
                 if (result != -1) {
                     Toast.makeText(context, "Delete successfully", Toast.LENGTH_SHORT).show();
-
+                    //notifyDataSetChanged();
+                    notifyItemRemoved(position);
                 } else {
                     Toast.makeText(context, "not deleted", Toast.LENGTH_SHORT).show();
                 }
@@ -158,7 +162,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
     }
 
     // ViewHolder for the recycler view
-    public static class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView rowFolderName, rowFolderCount;
         ImageView deleteImageView;
@@ -178,6 +182,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
         public void onClick(View v) {
             // whenever user click on any row of recycler view this function will  be called
             // do intent or any other task
+                Intent intent = new Intent(context, AddNoteActivity.class);
+                context.startActivity(intent);
 
         }
 

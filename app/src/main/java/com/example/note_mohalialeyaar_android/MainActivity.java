@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.note_mohalialeyaar_android.Adapters.FolderAdapter;
@@ -28,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton addBtn;
     RecyclerView recyclerView;
+    TextView total;
     ArrayList<FolderModelClass>  folderNames =  new ArrayList<>();
     //DatabaseHelperClass helper ;
-
+    private int totalFolder = 0;
     FolderAdapter adapter;
 
     @Override
@@ -40,23 +42,29 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv);
         addBtn = findViewById(R.id.addBtn);
+        total = findViewById(R.id.total);
 
         DatabaseHelperClass helper = new DatabaseHelperClass(this);
 
         // populating the array list using the method in  database helper class
 
-        folderNames = helper.getFolderName();
+        try{
+            folderNames = helper.getFolderName();
+
+            if (folderNames.size() > 0) {
+                // settoing up folder adapter passing arguments to the contructor of folder adapter
+                adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
+                totalFolder = folderNames.size();
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                recyclerView.setAdapter(adapter);
+            }
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
-        // settoing up folder adapter passing arguments to the contructor of folder adapter
-         adapter = new FolderAdapter(MainActivity.this,folderNames,helper);
 
-
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        recyclerView.setAdapter(adapter);
 
 
 
@@ -81,35 +89,21 @@ public class MainActivity extends AppCompatActivity {
 
                        String folderName = etFolderName.getText().toString();
 
-                       if (etFolderName.getText().toString().isEmpty())
-                       {
+                       if (etFolderName.getText().toString().isEmpty()) {
                            etFolderName.setError("Please add folder name");
                            etFolderName.requestFocus();
                            return;
                        }
-
-
-                       boolean bool = helper.insertFolder(folderName);
-                       if (bool) {
-                           Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
-                         //  notify();
-
-
-                           adapter.notifyDataSetChanged();
-                       }
-                       else
-                           Toast.makeText(MainActivity.this, "not added", Toast.LENGTH_SHORT).show();
-
+                       helper.insertFolder(folderName);
                    }
-               });
-
+                   });
               AlertDialog alert =  builder.create();
                alert.show();
             }
         });
 
 
-
+   total.setText(String.valueOf("Total Folders :" + totalFolder));
 
     }
 
