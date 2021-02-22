@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,17 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note_mohalialeyaar_android.FolderModelClass;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
+import com.example.note_mohalialeyaar_android.MainActivity;
 import com.example.note_mohalialeyaar_android.R;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHolder> {
+public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHolder> implements Filterable {
 
    Context context;
     ArrayList<FolderModelClass> arrayList;
     DatabaseHelperClass helper;
+    ArrayList<FolderModelClass> filerList;
 
 
 
@@ -38,6 +43,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
         this.context = context;
         this.arrayList = arrayList;
         this.helper = helper;
+        this.filerList = arrayList;
+
     }
 
 
@@ -53,11 +60,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
     @Override
     public void onBindViewHolder(@NonNull RVViewHolder holder, int position) {
 
-        final String name = arrayList.get(position).getFolderName();
-        final int id = arrayList.get(position).getFolderId();
+        final String name = filerList.get(position).getFolderName();
+        final int id = filerList.get(position).getFolderId();
         Log.i("tag ", "onBindViewHolder: " + name);
 
-        final FolderModelClass modelClass = arrayList.get(position);
+        final FolderModelClass modelClass = filerList.get(position);
 
         holder.rowFolderName.setText(name);
 
@@ -112,11 +119,46 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filerList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charcater = constraint.toString();
+                if (charcater.isEmpty()){
+                    filerList = arrayList ;
+                }else {
+                    ArrayList<FolderModelClass> newfilterList = new ArrayList<>();
+                    for (FolderModelClass row: arrayList){
+                        if (row.getFolderName().toLowerCase().contains(charcater.toLowerCase())){
+                            newfilterList.add(row);
+                        }
+                    }
+
+                    filerList = newfilterList ;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filerList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filerList = (ArrayList<FolderModelClass>) results.values ;
+                notifyDataSetChanged();
+            }
+        };
+
+
+
     }
 
     // ViewHolder for the recycler view
-    public static class RVViewHolder extends RecyclerView.ViewHolder{
+    public static class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView rowFolderName, rowFolderCount;
         ImageView deleteImageView;
@@ -128,6 +170,20 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             rowFolderCount = itemView.findViewById(R.id.rowFolderCount);
             deleteImageView = itemView.findViewById(R.id.deleteImageView);
 
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // whenever user click on any row of recycler view this function will  be called
+            // do intent or any other task
+
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
         }
     }
 

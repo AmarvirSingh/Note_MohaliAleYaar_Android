@@ -15,9 +15,10 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/search_bar_id"
         android:icon="@drawable/serach_foreground"
         app:showAsAction="ifRoom"
-        android:title="Search Notes"/>
+        android:title="Search Notes"
+        app:actionViewClass="android.widget.SearchView" />
 
 </menu>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.note_mohalialeyaar_android.Adapters.FolderAdapter;
@@ -118,6 +119,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
        getMenuInflater().inflate(R.menu.mainactivity_menu,menu);
+       MenuItem item = menu.findItem(R.id.search_bar_id);
+        SearchView searchView = (SearchView) item.getActionView();
+         searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+
+
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -132,8 +155,10 @@ public class MainActivity extends AppCompatActivity {
             case(R.id.folderBtn):
                 Toast.makeText(this, "Show Folder Button Clicked ", Toast.LENGTH_SHORT).show();
                 break;
-            case (R.id.search):
-                Toast.makeText(this, "Search Button Clicked ", Toast.LENGTH_SHORT).show();
+            //case (R.id.search_bar_id):
+
+
+
             default:
                 break;
         }
