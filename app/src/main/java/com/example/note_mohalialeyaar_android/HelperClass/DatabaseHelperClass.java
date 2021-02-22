@@ -69,7 +69,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     }
 
-    public void insertFolder (String folderName)
+    public long insertFolder (String folderName)
     {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -79,12 +79,8 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
 
        long result  = db.insert(FOLDER_TABLE,null,contentValues);
-        if(result != -1 ){
-            Toast.makeText(context, "Data Added successfully", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Data not added ", Toast.LENGTH_SHORT).show();
-        }
 
+       return result;
     }
 
     public ArrayList<FolderModelClass> getFolderName()

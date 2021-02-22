@@ -94,7 +94,49 @@ public class MainActivity extends AppCompatActivity {
                            etFolderName.requestFocus();
                            return;
                        }
-                       helper.insertFolder(folderName);
+                       long result = helper.insertFolder(folderName);
+                       if(result != -1 ){
+                           Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
+
+                           //********************************
+                           folderNames.clear();
+                           try{
+                               folderNames = helper.getFolderName();
+
+                               if (folderNames.size() > 0) {
+                                   // settoing up folder adapter passing arguments to the contructor of folder adapter
+                                   adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
+                                   totalFolder = folderNames.size();
+                                   recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+                                   recyclerView.setAdapter(adapter);
+                               }
+                           }catch (Exception e){
+                               Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                           }
+
+
+                           total.setText(String.valueOf("Total Folders :" + totalFolder));
+
+                           adapter.notifyDataSetChanged();
+
+
+
+
+
+
+                       }else {
+                      //     Toast.makeText(MainActivity.this, "Data not added ", Toast.LENGTH_SHORT).show();
+
+
+                           etFolderName.setError("name Already talken");
+                           etFolderName.requestFocus();
+                           return;
+
+
+                       }
+
+
 
                    }
                    });
@@ -115,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
        getMenuInflater().inflate(R.menu.mainactivity_menu,menu);
        MenuItem item = menu.findItem(R.id.search_bar_id);
+
         SearchView searchView = (SearchView) item.getActionView();
          searchView.setMaxWidth(Integer.MAX_VALUE);
 
