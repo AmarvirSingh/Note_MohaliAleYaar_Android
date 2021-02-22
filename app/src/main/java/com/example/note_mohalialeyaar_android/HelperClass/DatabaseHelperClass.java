@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -127,4 +128,29 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     return result;
     }
+
+    // method to get number of notes present in the Folder
+    public int getNumberOfNotes(int folderId){
+        SQLiteDatabase db = getReadableDatabase();
+        //int total = db.execSQL("SELECT COUNT(*) FROM " + NOTE_TABLE + " WHERE " + COLUMN_FOLDER_ID + " = " + folderId + " ; ");
+
+        String query = "SELECT "+ COLUMN_TITLE +" FROM "+ NOTE_TABLE + " WHERE " + COLUMN_FOLDER_ID + " = " +folderId+ ";";
+        ArrayList<String> names =  new ArrayList<>();
+
+
+        Cursor cursor;
+        cursor = db.rawQuery(query,null);
+        if (cursor.getCount() != 0){
+            while(cursor.moveToNext()){
+                names.add(cursor.getString(0));
+
+            }
+
+        }
+        Log.i("TAG", "getNumberOfNotes: id - "+folderId+ " size " + names.size());
+        cursor.close();
+        return names.size();
+    }
+
+
 }

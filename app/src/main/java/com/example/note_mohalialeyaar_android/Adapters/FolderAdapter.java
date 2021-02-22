@@ -70,6 +70,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
         final FolderModelClass modelClass = filerList.get(position);
 
         holder.rowFolderName.setText(name);
+        holder.rowFolderCount.setText(String.valueOf(helper.getNumberOfNotes(modelClass.getFolderId())));
 
         holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
