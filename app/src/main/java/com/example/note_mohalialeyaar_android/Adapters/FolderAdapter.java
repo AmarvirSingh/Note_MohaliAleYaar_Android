@@ -99,6 +99,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
                     Toast.makeText(context, "Delete successfully", Toast.LENGTH_SHORT).show();
                     //notifyDataSetChanged();
                     notifyItemRemoved(position);
+                    filerList.remove(position);
                 } else {
                     Toast.makeText(context, "not deleted", Toast.LENGTH_SHORT).show();
                 }
@@ -112,6 +113,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
             }
         });
         AlertDialog alert = builder.create();

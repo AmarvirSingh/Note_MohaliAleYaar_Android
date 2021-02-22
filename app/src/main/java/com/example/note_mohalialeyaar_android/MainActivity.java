@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                            return;
                        }
                        helper.insertFolder(folderName);
+
                    }
                    });
               AlertDialog alert =  builder.create();
