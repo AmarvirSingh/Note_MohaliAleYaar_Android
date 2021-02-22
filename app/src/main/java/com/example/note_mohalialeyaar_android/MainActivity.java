@@ -3,6 +3,7 @@ package com.example.note_mohalialeyaar_android;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.note_mohalialeyaar_android.Adapters.FolderAdapter;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addBtn;
     RecyclerView recyclerView;
     ArrayList<String>  folderNames =  new ArrayList<>();
+    DatabaseHelperClass helper ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv);
         addBtn = findViewById(R.id.addBtn);
-        DatabaseHelperClass helper = new DatabaseHelperClass(getApplicationContext());
 
+        DatabaseHelperClass helper = new DatabaseHelperClass(this);
+
+        // populating the array list using the method in  database helper class
 
         folderNames = helper.getFolderName();
 
-        //ArrayAdapter arrayAdapter = new ArrayAdapter(this,)
-        //
+
+        // settoing up folder adapter passing arguments to the contructor of folder adapter
+        FolderAdapter adapter = new FolderAdapter(MainActivity.this,folderNames,helper);
+
+
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
                 View view = layoutInflater.inflate(R.layout.activity_add_folder_actvity,null,false);
-                builder.setView(view).create().show();
+                builder.setView(view);
 
                 EditText etFolderName = view.findViewById(R.id.folderName);
                 Button btnAddFolder = view.findViewById(R.id.addFolderBtn);
@@ -63,37 +79,31 @@ public class MainActivity extends AppCompatActivity {
 
                        if (etFolderName.getText().toString().isEmpty())
                        {
-                           etFolderName.setError("PLease add foldr name");
+                           etFolderName.setError("Please add folder name");
                            etFolderName.requestFocus();
                            return;
                        }
 
 
                        boolean bool = helper.insertFolder(folderName);
-                       if (bool)
+                       if (bool) {
                            Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
+                         //  notify();
+
+
+                       }
                        else
                            Toast.makeText(MainActivity.this, "not added", Toast.LENGTH_SHORT).show();
-
-
-
-
-
-
-
-
 
                    }
                });
 
-
-
-
-
-
-
+              AlertDialog alert =  builder.create();
+               alert.show();
             }
         });
+
+
 
 
     }

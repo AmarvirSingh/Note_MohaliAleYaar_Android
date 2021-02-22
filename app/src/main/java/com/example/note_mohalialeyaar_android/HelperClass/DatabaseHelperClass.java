@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -87,20 +88,33 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     public ArrayList<String> getFolderName()
     {
-        SQLiteDatabase database = getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT * FROM "+FOLDER_TABLE+";",null);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        if(cursor != null)
-        {
-            cursor.moveToFirst();
-            do {
-                arrayList.add(cursor.getInt(0),cursor.getString(1));
-            }
-            while(cursor.moveToNext());
-        }
+       try {
+           SQLiteDatabase database = getReadableDatabase();
+           Cursor cursor = null;
+            cursor = database.rawQuery("SELECT * FROM " + FOLDER_TABLE + "", null);
 
-        return arrayList;
+           ArrayList<String> arrayList = new ArrayList<>();
+           if (cursor.getCount() != 0) {
+
+               while (cursor.moveToNext())
+                  arrayList.add(cursor.getString(1));
+
+
+               cursor.close();
+
+               return arrayList;
+
+               }else {
+               return  null;
+
+
+       }
+
+       }catch(Exception e){
+           Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+       }
+        return null;
     }
 
 }
