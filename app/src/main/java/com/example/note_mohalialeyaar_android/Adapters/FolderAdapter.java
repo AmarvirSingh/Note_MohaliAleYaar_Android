@@ -186,6 +186,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             // whenever user click on any row of recycler view this function will  be called
             // do intent or any other task
                 Intent intent = new Intent(context, AddNoteActivity.class);
+
+                // passing folder id so that all the notes should added to that folder only in notes tableView
+                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getFolderId());
                 context.startActivity(intent);
 
         }
