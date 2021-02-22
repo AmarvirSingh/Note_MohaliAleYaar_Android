@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.note_mohalialeyaar_android.FolderModelClass;
+import com.example.note_mohalialeyaar_android.MainActivity;
 
 import java.util.ArrayList;
 
@@ -86,7 +87,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<String> getFolderName()
+    public ArrayList<FolderModelClass> getFolderName()
     {
 
        try {
@@ -94,12 +95,18 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
            Cursor cursor = null;
             cursor = database.rawQuery("SELECT * FROM " + FOLDER_TABLE + "", null);
 
-           ArrayList<String> arrayList = new ArrayList<>();
+           ArrayList<FolderModelClass> arrayList = new ArrayList<>();
            if (cursor.getCount() != 0) {
 
-               while (cursor.moveToNext())
-                  arrayList.add(cursor.getString(1));
+               while (cursor.moveToNext()){
+                  int id = cursor.getInt(0);
+                  String name = cursor.getString(1);
 
+                  FolderModelClass modelClass = new FolderModelClass(id,name);
+
+                  arrayList.add(modelClass);
+
+               }
 
                cursor.close();
 
@@ -117,4 +124,11 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         return null;
     }
 
+    public long   deleteFolder(int folderId) {
+    SQLiteDatabase db = getWritableDatabase();
+
+    long result = db.delete(FOLDER_TABLE,"folder_id = ?",new String[]{String.valueOf(folderId)});
+
+    return result;
+    }
 }

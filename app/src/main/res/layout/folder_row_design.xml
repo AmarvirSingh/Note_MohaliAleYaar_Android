@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
@@ -11,6 +12,13 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingEnd="5dp"
+            android:src="@drawable/folderimage"
+            android:paddingRight="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,10 +34,17 @@
             android:text="0"
             android:textAlignment="center"
             android:layout_weight="1"
-            android:textSize="15dp"
+            android:textSize="30dp"
             android:id="@+id/rowFolderCount"
             android:textColor="@color/black"
             android:gravity="center_horizontal" />
+
+        <ImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/delete" />
 
     </LinearLayout>
     

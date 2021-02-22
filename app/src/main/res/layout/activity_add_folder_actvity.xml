@@ -28,13 +28,23 @@
         android:textAlignment="center"
         android:id="@+id/folderName"
         android:gravity="center_horizontal" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height= "wrap_content"
+    android:orientation="horizontal">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:backgroundTint="#39CF3F"
         android:text="Add Folder"
-        android:id="@+id/addFolderBtn"
+        android:id="@+id/addFolderBtn"/>
 
-        android:layout_gravity="center"/>
+
+
+</LinearLayout>
+
 
 </LinearLayout>

@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton addBtn;
     RecyclerView recyclerView;
-    ArrayList<String>  folderNames =  new ArrayList<>();
-    DatabaseHelperClass helper ;
+    ArrayList<FolderModelClass>  folderNames =  new ArrayList<>();
+    //DatabaseHelperClass helper ;
 
+    FolderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // settoing up folder adapter passing arguments to the contructor of folder adapter
-        FolderAdapter adapter = new FolderAdapter(MainActivity.this,folderNames,helper);
+         adapter = new FolderAdapter(MainActivity.this,folderNames,helper);
 
 
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
+
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText etFolderName = view.findViewById(R.id.folderName);
                 Button btnAddFolder = view.findViewById(R.id.addFolderBtn);
+
+
 
 
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                          //  notify();
 
 
+                           adapter.notifyDataSetChanged();
                        }
                        else
                            Toast.makeText(MainActivity.this, "not added", Toast.LENGTH_SHORT).show();
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 
     @Override
