@@ -84,7 +84,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         return result;
     }
 
-    public long insertNote(String title,String Desc,String location,String image)
+    public long insertNote(String title,String Desc,String location,String image,String address)
     {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -96,7 +96,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         contentValues.put(COLUMN_DATE,formatter.format(date));
         contentValues.put(COLUMN_LOCATION,location);
         contentValues.put(COLUMN_IMAGE,image);
-        contentValues.put(COLUMN_ADDRESS,image);
+        contentValues.put(COLUMN_ADDRESS,address);
         contentValues.put(COLUMN_FOLDER_ID,4);
         long result = db.insert(NOTE_TABLE,null,contentValues);
         return result;
@@ -154,8 +154,9 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
                     int id = cursor.getInt(0);
                     String title = cursor.getString(1);
                     String desc = cursor.getString(2);
-
-                    NotesModelClass modelClass = new NotesModelClass(title,desc);
+                    String loc = cursor.getString(5);
+                    byte[] s = title.getBytes();
+                    NotesModelClass modelClass = new NotesModelClass(id,title,desc,"",loc,"",s);
 
                     arrayList.add(modelClass);
 

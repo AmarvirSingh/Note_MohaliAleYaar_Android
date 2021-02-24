@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_mohalialeyaar_android.AddNoteActivity;
 import com.example.note_mohalialeyaar_android.FolderModelClass;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
+import com.example.note_mohalialeyaar_android.MapsActivity;
 import com.example.note_mohalialeyaar_android.NotesModelClass;
 import com.example.note_mohalialeyaar_android.R;
 
@@ -58,12 +59,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
 
         String name = filerList.get(position).getNoteTitle();
         final int id = filerList.get(position).getNoteID();
+        final String location = filerList.get(position).getNoteLocation();
         Log.i("tag ", "onBindViewHolder: " + name);
 
+        if(location!=null)
+        {
+            if(!location.equals(""))
+            {
+                String[] loc = location.split(",");
+                holder.btnMap.setTag(loc);
+            }
+        }
 
         final NotesModelClass modelClass = filerList.get(position);
         holder.rowTitle.setText(modelClass.getNoteTitle().toString());
         holder.rowDesc.setText(modelClass.getNoteDescription().toString());
+
 
 //        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -161,6 +172,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
     class RVNotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView rowTitle, rowDesc;
+        TextView btnMap;
         ImageView deleteImageView;
 
         public RVNotesViewHolder(@NonNull View itemView) {
@@ -168,6 +180,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
 
             rowTitle = itemView.findViewById(R.id.row_note_title);
             rowDesc = itemView.findViewById(R.id.row_note_description);
+            btnMap = itemView.findViewById(R.id.row_btn_map);
+            btnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String[] c =    (String[]) view.getTag();
+                    String lat = "";
+                    String longi = "";
+                    if(c.length>1)
+                    {
+                        lat = c[0];
+                        longi =c[1];
+                    }
+                    Intent intent = new Intent(context, MapsActivity.class);
+                    intent.putExtra("lat",lat);
+                    intent.putExtra("long",longi);
+                    context.startActivity(intent);
+                }
+            });
 
 
             itemView.setOnClickListener(this);
@@ -181,8 +211,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
             Intent intent = new Intent(context, AddNoteActivity.class);
 
             // passing folder id so that all the notes should added to that folder only in notes tableView
-            intent.putExtra("folderId", filerList.get(getAdapterPosition()).getNoteID());
-            context.startActivity(intent);
+//                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getNoteID());
+//                context.startActivity(intent);
 
         }
 

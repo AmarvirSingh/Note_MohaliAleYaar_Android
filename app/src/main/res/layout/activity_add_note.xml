@@ -50,11 +50,11 @@
         android:id="@+id/desc_note"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:ems="10"
+
         android:gravity="start|top"
         android:hint="enter the description"
         android:inputType="textMultiLine"
-        android:rotationX="-6"
+
         android:singleLine="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_note" />

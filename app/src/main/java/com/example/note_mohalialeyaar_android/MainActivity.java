@@ -1,23 +1,21 @@
 package com.example.note_mohalialeyaar_android;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note_mohalialeyaar_android.Adapters.FolderAdapter;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
 
                             //********************************
-                            folderNames.clear();
+//                           folderNames.clear();
                             try{
                                 folderNames = helper.getFolderName();
 
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                                     recyclerView.setAdapter(adapter);
                                 }
                             }catch (Exception e){
-                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                               Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
 

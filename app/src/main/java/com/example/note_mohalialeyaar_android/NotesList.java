@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note_mohalialeyaar_android.Adapters.NotesAdapter;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
-//import com.google.android.gms.location.FusedLocationProviderClient;
-//import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class NotesList extends AppCompatActivity {
     NotesAdapter notesAdapter;
     FloatingActionButton btnAdd;
     ArrayList<NotesModelClass> notes;
-   // FusedLocationProviderClient mFusedLocationClient;
+    FusedLocationProviderClient mFusedLocationClient;
 
     // Initializing other items
     // from layout file
@@ -36,7 +36,7 @@ public class NotesList extends AppCompatActivity {
         listView = findViewById(R.id.listViewNotes);
         DatabaseHelperClass helper = new DatabaseHelperClass(this);
         btnAdd = findViewById(R.id.addBtnNotes);
-      //  mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // populating the array list using the method in  database helper class
         btnAdd.setOnClickListener(view -> {
@@ -57,7 +57,7 @@ public class NotesList extends AppCompatActivity {
                 listView.setAdapter(notesAdapter);
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

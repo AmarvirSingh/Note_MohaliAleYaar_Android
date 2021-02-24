@@ -21,22 +21,29 @@
                 android:layout_height="wrap_content"
                 android:text="Note Title"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
             <TextView
                 android:id="@+id/row_note_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Note Description"/>
 
         </LinearLayout>
 
-        <Button
+        <TextView
             android:layout_weight="1"
             android:id="@+id/row_btn_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="info"/>
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/row_btn_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="map"/>
 
     </LinearLayout>
 
