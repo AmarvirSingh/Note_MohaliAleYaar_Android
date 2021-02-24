@@ -11,9 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.note_mohalialeyaar_android.FolderModelClass;
-import com.example.note_mohalialeyaar_android.MainActivity;
+import com.example.note_mohalialeyaar_android.NotesModelClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DatabaseHelperClass extends SQLiteOpenHelper {
 
@@ -44,14 +46,12 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         String query = "CREATE TABLE IF NOT EXISTS " + NOTE_TABLE + "(" +
                 COLUMN_ID + " INTEGER NOT NULL CONSTRAINT note_pk PRIMARY KEY AUTOINCREMENT ," +
                 COLUMN_TITLE + " TEXT NOT NULL, " +
-                COLUMN_DESCRIPTION + "TEXT ," +
+                COLUMN_DESCRIPTION + " TEXT ," +
                 COLUMN_DATE + " TEXT ," +
                 COLUMN_IMAGE + " BLOB ," +
                 COLUMN_LOCATION + " TEXT ," +
                 COLUMN_ADDRESS + " TEXT ," +
-                COLUMN_FOLDER_ID + " INTEGER ," +
-                "FOREIGN KEY(" + COLUMN_FOLDER_ID + ") REFERENCES " + FOLDER_TABLE + "(" + COLUMN_FOLDER_ID + ") ON UPDATE CASCADE ON DELETE CASCADE" +
-                " );";
+                COLUMN_FOLDER_ID + " INTEGER"+ ")";
 
         String foldertableQuery = "CREATE TABLE IF NOT EXISTS " +FOLDER_TABLE+ "("+
                 COLUMN_FOLDER_ID + " INTEGER NOT NULL CONSTRAINT folder_pk PRIMARY KEY AUTOINCREMENT, "+COLUMN_FOLDER_NAME+ " TEXT NOT NULL UNIQUE );";
@@ -79,16 +79,25 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         contentValues.put(COLUMN_FOLDER_NAME,folderName);
 
 
-       long result  = db.insert(FOLDER_TABLE,null,contentValues);
+        long result  = db.insert(FOLDER_TABLE,null,contentValues);
 
-       return result;
+        return result;
     }
 
-    public long insertNote(String note_id)
+    public long insertNote(String title,String Desc,String location,String image)
     {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_ID,note_id);
+
+        contentValues.put(COLUMN_TITLE,title);
+        contentValues.put(COLUMN_DESCRIPTION,Desc);
+        Date date = new Date(); // This object contains the current date value
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        contentValues.put(COLUMN_DATE,formatter.format(date));
+        contentValues.put(COLUMN_LOCATION,location);
+        contentValues.put(COLUMN_IMAGE,image);
+        contentValues.put(COLUMN_ADDRESS,image);
+        contentValues.put(COLUMN_FOLDER_ID,4);
         long result = db.insert(NOTE_TABLE,null,contentValues);
         return result;
     }
@@ -96,48 +105,83 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     public ArrayList<FolderModelClass> getFolderName()
     {
 
-       try {
-           SQLiteDatabase database = getReadableDatabase();
-           Cursor cursor = null;
+        try {
+            SQLiteDatabase database = getReadableDatabase();
+            Cursor cursor = null;
             cursor = database.rawQuery("SELECT * FROM " + FOLDER_TABLE + "", null);
 
-           ArrayList<FolderModelClass> arrayList = new ArrayList<>();
-           if (cursor.getCount() != 0) {
+            ArrayList<FolderModelClass> arrayList = new ArrayList<>();
+            if (cursor.getCount() != 0) {
 
-               while (cursor.moveToNext()){
-                  int id = cursor.getInt(0);
-                  String name = cursor.getString(1);
+                while (cursor.moveToNext()){
+                    int id = cursor.getInt(0);
+                    String name = cursor.getString(1);
 
-                  FolderModelClass modelClass = new FolderModelClass(id,name);
+                    FolderModelClass modelClass = new FolderModelClass(id,name);
 
-                  arrayList.add(modelClass);
+                    arrayList.add(modelClass);
 
-               }
+                }
 
-               cursor.close();
+                cursor.close();
 
-               return arrayList;
+                return arrayList;
 
-               }else {
-               return  null;
+            }else {
+                return  null;
 
 
-       }
+            }
 
-       }catch(Exception e){
-           Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
-       }
+        }catch(Exception e){
+            Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
         return null;
     }
 
-    public long   deleteFolder(int folderId) {
-    SQLiteDatabase db = getWritableDatabase();
+    public ArrayList<NotesModelClass> getNotesList()
+    {
 
-    long result = db.delete(FOLDER_TABLE,"folder_id = ?",new String[]{String.valueOf(folderId)});
+        try {
+            SQLiteDatabase database = getReadableDatabase();
+            Cursor cursor = null;
+            cursor = database.rawQuery("SELECT * FROM " + NOTE_TABLE + "", null);
 
-    return result;
+            ArrayList<NotesModelClass> arrayList = new ArrayList<>();
+            if (cursor.getCount() != 0) {
+
+                while (cursor.moveToNext()){
+                    int id = cursor.getInt(0);
+                    String title = cursor.getString(1);
+                    String desc = cursor.getString(2);
+
+                    NotesModelClass modelClass = new NotesModelClass(title,desc);
+
+                    arrayList.add(modelClass);
+
+                }
+
+                cursor.close();
+
+                return arrayList;
+
+            }else {
+                return  null;
+            }
+
+        }catch(Exception e){
+            Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+        }
+        return null;
     }
 
+    public long deleteFolder(int folderId) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        long result = db.delete(FOLDER_TABLE,"folder_id = ?",new String[]{String.valueOf(folderId)});
+
+        return result;
+    }
 
     // method to get number of notes present in the Folder
     public int getNumberOfNotes(int folderId){

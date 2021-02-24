@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -17,19 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.note_mohalialeyaar_android.AddNoteActivity;
 import com.example.note_mohalialeyaar_android.FolderModelClass;
 import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
-import com.example.note_mohalialeyaar_android.MainActivity;
+import com.example.note_mohalialeyaar_android.NotesList;
 import com.example.note_mohalialeyaar_android.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHolder> implements Filterable {
 
@@ -62,7 +55,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
     @Override
     public void onBindViewHolder(@NonNull RVViewHolder holder, int position) {
 
-         String name = filerList.get(position).getFolderName();
+        String name = filerList.get(position).getFolderName();
         final int id = filerList.get(position).getFolderId();
         Log.i("tag ", "onBindViewHolder: " + name);
 
@@ -165,7 +158,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
     }
 
     // ViewHolder for the recycler view
-     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView rowFolderName, rowFolderCount;
         ImageView deleteImageView;
@@ -185,11 +178,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
         public void onClick(View v) {
             // whenever user click on any row of recycler view this function will  be called
             // do intent or any other task
-                Intent intent = new Intent(context, AddNoteActivity.class);
+            Intent intent = new Intent(context, NotesList.class);
 
-                // passing folder id so that all the notes should added to that folder only in notes tableView
-                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getFolderId());
-                context.startActivity(intent);
+            // passing folder id so that all the notes should added to that folder only in notes tableView
+//                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getFolderId());
+            context.startActivity(intent);
 
         }
 

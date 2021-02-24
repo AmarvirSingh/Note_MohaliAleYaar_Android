@@ -83,70 +83,70 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-               btnAddFolder.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
+                btnAddFolder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                       String folderName = etFolderName.getText().toString();
+                        String folderName = etFolderName.getText().toString();
 
-                       if (etFolderName.getText().toString().isEmpty()) {
-                           etFolderName.setError("Please add folder name");
-                           etFolderName.requestFocus();
-                           return;
-                       }
-                       long result = helper.insertFolder(folderName);
-                       if(result != -1 ){
-                           Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
+                        if (etFolderName.getText().toString().isEmpty()) {
+                            etFolderName.setError("Please add folder name");
+                            etFolderName.requestFocus();
+                            return;
+                        }
+                        long result = helper.insertFolder(folderName);
+                        if(result != -1 ){
+                            Toast.makeText(MainActivity.this, "Data Added successfully", Toast.LENGTH_SHORT).show();
 
-                           //********************************
-                           folderNames.clear();
-                           try{
-                               folderNames = helper.getFolderName();
+                            //********************************
+                            folderNames.clear();
+                            try{
+                                folderNames = helper.getFolderName();
 
-                               if (folderNames.size() > 0) {
-                                   // settoing up folder adapter passing arguments to the contructor of folder adapter
-                                   adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
-                                   totalFolder = folderNames.size();
-                                   recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                                if (folderNames.size() > 0) {
+                                    // settoing up folder adapter passing arguments to the contructor of folder adapter
+                                    adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
+                                    totalFolder = folderNames.size();
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-                                   recyclerView.setAdapter(adapter);
-                               }
-                           }catch (Exception e){
-                               Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                           }
-
-
-                           total.setText(String.valueOf("Total Folders :" + totalFolder));
-
-                           adapter.notifyDataSetChanged();
+                                    recyclerView.setAdapter(adapter);
+                                }
+                            }catch (Exception e){
+                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
 
+                            total.setText(String.valueOf("Total Folders :" + totalFolder));
+
+                            adapter.notifyDataSetChanged();
 
 
 
 
-                       }else {
-                      //     Toast.makeText(MainActivity.this, "Data not added ", Toast.LENGTH_SHORT).show();
 
 
-                           etFolderName.setError("name Already talken");
-                           etFolderName.requestFocus();
-                           return;
+                        }else {
+                            //     Toast.makeText(MainActivity.this, "Data not added ", Toast.LENGTH_SHORT).show();
 
 
-                       }
+                            etFolderName.setError("name Already talken");
+                            etFolderName.requestFocus();
+                            return;
+
+
+                        }
 
 
 
-                   }
-                   });
-              AlertDialog alert =  builder.create();
-               alert.show();
+                    }
+                });
+                AlertDialog alert =  builder.create();
+                alert.show();
             }
         });
 
 
-   total.setText(String.valueOf("Total Folders :" + totalFolder));
+        total.setText(String.valueOf("Total Folders :" + totalFolder));
 
     }
 
@@ -155,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-       getMenuInflater().inflate(R.menu.mainactivity_menu,menu);
-       MenuItem item = menu.findItem(R.id.search_bar_id);
+        getMenuInflater().inflate(R.menu.mainactivity_menu,menu);
+        MenuItem item = menu.findItem(R.id.search_bar_id);
 
         SearchView searchView = (SearchView) item.getActionView();
-         searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -2,7 +2,7 @@ package com.example.note_mohalialeyaar_android;
 
 public class FolderModelClass
 {
-   private int folderId;
+    private int folderId;
     private String folderName;
 
 

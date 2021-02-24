@@ -21,23 +21,24 @@
             android:paddingRight="10dp" />
 
         <TextView
+            android:id="@+id/rowFolderTitle"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="Notes title"
-            android:textSize="30dp"
             android:layout_weight="3"
-            android:textColor="@color/black"
-            android:id="@+id/rowFolderTitle"/>
+            android:text="Notes title"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
         <TextView
+            android:id="@+id/rowFolderCount"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
             android:text="0"
             android:textAlignment="center"
-            android:layout_weight="1"
-            android:textSize="30dp"
-            android:id="@+id/rowFolderCount"
-            android:textColor="@color/black"
-            android:gravity="center_horizontal" />
+            android:textColor="@color/white"
+            android:textSize="30dp" />
 
         <ImageView
             android:id="@+id/deleteImageView"
@@ -47,6 +48,6 @@
             app:srcCompat="@drawable/delete" />
 
     </LinearLayout>
-    
-    
+
+
 </LinearLayout>
