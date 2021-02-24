@@ -20,7 +20,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
         title = findViewById(R.id.title_note);
         description = findViewById(R.id.desc_note);
-        btn = findViewById(R.id.btn_note);
+
 
     }
 }
