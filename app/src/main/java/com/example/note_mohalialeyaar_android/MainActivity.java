@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             folderNames = helper.getFolderName();
 
             if (folderNames.size() > 0) {
-                // settoing up folder adapter passing arguments to the contructor of folder adapter
+                // setting up folder adapter passing arguments to the contructor of folder adapter
                 adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
                 totalFolder = folderNames.size();
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));

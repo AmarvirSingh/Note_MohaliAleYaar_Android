@@ -10,6 +10,11 @@ public class NotesModelClass {
     private String noteAddress;
     private byte[] noteImage;
 
+    public NotesModelClass(String noteTitle, String noteDescription) {
+        this.noteTitle = noteTitle;
+        this.noteDescription = noteDescription;
+    }
+
     public NotesModelClass(int noteID, String noteTitle, String noteDescription, String noteDateTime, String noteLocation, String noteAddress, byte[] noteImage) {
         this.noteID = noteID;
         this.noteTitle = noteTitle;

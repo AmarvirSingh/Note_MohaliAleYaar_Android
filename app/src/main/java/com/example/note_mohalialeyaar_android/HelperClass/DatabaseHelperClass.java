@@ -84,6 +84,15 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
        return result;
     }
 
+    public long insertNote(String note_id)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_ID,note_id);
+        long result = db.insert(NOTE_TABLE,null,contentValues);
+        return result;
+    }
+
     public ArrayList<FolderModelClass> getFolderName()
     {
 
@@ -128,6 +137,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     return result;
     }
+
 
     // method to get number of notes present in the Folder
     public int getNumberOfNotes(int folderId){
