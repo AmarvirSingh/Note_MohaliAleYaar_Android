@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="Notes title"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="30dp" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:gravity="center_horizontal"
             android:text="0"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="30dp" />
 
         <ImageView

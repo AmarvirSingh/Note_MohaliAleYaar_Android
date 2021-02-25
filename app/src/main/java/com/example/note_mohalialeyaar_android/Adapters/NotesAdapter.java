@@ -72,8 +72,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
         }
 
         final NotesModelClass modelClass = filerList.get(position);
-        holder.rowTitle.setText(modelClass.getNoteTitle().toString());
-        holder.rowDesc.setText(modelClass.getNoteDescription().toString());
+        holder.rowTitle.setText(modelClass.getNoteTitle());
+        holder.rowDesc.setText(modelClass.getNoteDescription());
+
+        holder.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Note Added on - " + modelClass.getNoteDateTime() , Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 //        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
@@ -169,10 +176,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
     }
 
     // ViewHolder for the recycler view
-    class RVNotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class RVNotesViewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener {
 
         TextView rowTitle, rowDesc;
-        TextView btnMap;
+        TextView btnMap,  info;
         ImageView deleteImageView;
 
         public RVNotesViewHolder(@NonNull View itemView) {
@@ -180,6 +187,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
 
             rowTitle = itemView.findViewById(R.id.row_note_title);
             rowDesc = itemView.findViewById(R.id.row_note_description);
+            info = itemView.findViewById(R.id.row_btn_info);
             btnMap = itemView.findViewById(R.id.row_btn_map);
             btnMap.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,21 +208,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
             });
 
 
-            itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            // whenever user click on any row of recycler view this function will  be called
-            // do intent or any other task
-            Intent intent = new Intent(context, AddNoteActivity.class);
-
-            // passing folder id so that all the notes should added to that folder only in notes tableView
-//                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getNoteID());
-//                context.startActivity(intent);
-
-        }
 
         @Override
         public boolean onLongClick(View v) {

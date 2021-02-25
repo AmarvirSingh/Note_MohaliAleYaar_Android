@@ -28,9 +28,16 @@ public class NotesList extends AppCompatActivity {
     // from layout file
     int PERMISSION_ID = 44;
 
+    int folderID;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // retireiving folder id here;
+        folderID = getIntent().getIntExtra("folderId", 1);
+
+
+
 
         setContentView(R.layout.activity_notes_list);
         listView = findViewById(R.id.listViewNotes);
@@ -41,12 +48,12 @@ public class NotesList extends AppCompatActivity {
         // populating the array list using the method in  database helper class
         btnAdd.setOnClickListener(view -> {
             Intent intent = new Intent(NotesList.this, AddNoteActivity.class);
-            intent.putExtra("folderId", 1);
+            intent.putExtra("folderId", folderID);
             startActivity(intent);
 
         });
         try {
-            notes = helper.getNotesList();
+            notes = helper.getAllNotes();
 
             if (notes.size() > 0) {
                 // setting up folder adapter passing arguments to the contructor of folder adapter
@@ -72,12 +79,12 @@ public class NotesList extends AppCompatActivity {
         // populating the array list using the method in  database helper class
         btnAdd.setOnClickListener(view -> {
             Intent intent = new Intent(NotesList.this,AddNoteActivity.class);
-            intent.putExtra("folderId",1);
+            intent.putExtra("folderId",folderID);
             startActivity(intent);
 
         });
         try{
-            notes = helper.getNotesList();
+            notes = helper.getAllNotes();
 
             if (notes.size() > 0) {
                 // setting up folder adapter passing arguments to the contructor of folder adapter

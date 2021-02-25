@@ -181,7 +181,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             Intent intent = new Intent(context, NotesList.class);
 
             // passing folder id so that all the notes should added to that folder only in notes tableView
-//                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getFolderId());
+                intent.putExtra("folderId", filerList.get(getAdapterPosition()).getFolderId());
+            Log.i("TAG", "onClick:  in folder adapter "+ filerList.get(getAdapterPosition()).getFolderId());
             context.startActivity(intent);
 
         }

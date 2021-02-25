@@ -9,13 +9,19 @@ public class NotesModelClass {
     private String noteLocation;
     private String noteAddress;
     private byte[] noteImage;
+    private  int folderID ;
 
-    public NotesModelClass(String noteTitle, String noteDescription) {
+    public NotesModelClass(int noteID, String noteTitle, String noteDescription, String noteDateTime, int folderID) {
+        this.noteID = noteID;
         this.noteTitle = noteTitle;
         this.noteDescription = noteDescription;
+        this.noteDateTime = noteDateTime;
+        this.folderID = folderID;
     }
 
-    public NotesModelClass(int noteID, String noteTitle, String noteDescription, String noteDateTime, String noteLocation, String noteAddress, byte[] noteImage) {
+
+
+    public NotesModelClass(int noteID, String noteTitle, String noteDescription, String noteDateTime, String noteLocation, String noteAddress, byte[] noteImage, int folderID) {
         this.noteID = noteID;
         this.noteTitle = noteTitle;
         this.noteDescription = noteDescription;
@@ -23,6 +29,7 @@ public class NotesModelClass {
         this.noteLocation = noteLocation;
         this.noteAddress = noteAddress;
         this.noteImage = noteImage;
+        this.folderID = folderID;
     }
 
     public int getNoteID() {

@@ -31,13 +31,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class AddNoteActivity extends AppCompatActivity {
 
-    EditText title, description;
+    EditText notetitle, notedescription;
     Button btnSave;
     Button btn_image;
     DatabaseHelperClass db;
@@ -47,37 +49,55 @@ public class AddNoteActivity extends AppCompatActivity {
     // Initializing other items
     // from layout file
     int PERMISSION_ID = 44;
-    ArrayList<NotesModelClass> notesDesc = new ArrayList<>();
+    //ArrayList<NotesModelClass> notesDesc = new ArrayList<>();
+    int folderId;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
+        folderId = getIntent().getIntExtra("folderId",1);
+
+
+
+
         db = new DatabaseHelperClass(this);
-        title = findViewById(R.id.title_note);
-        description = findViewById(R.id.desc_note);
+        notetitle = findViewById(R.id.title_note);
+        notedescription = findViewById(R.id.desc_note);
         btnSave = findViewById(R.id.save);
         btn_image = findViewById(R.id.btnpickimage);
         locationTxt = findViewById(R.id.location);
 
         btnSave.setOnClickListener(view -> {
-            if(validate())
-            {
+            String title = notetitle.getText().toString();
+            String descrip = notedescription.getText().toString();
+
+            Date date = new Date(); // This object contains the current date value
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String realDate = formatter.format(date);
 
 
-                long insert =  db.insertNote(title.getText().toString(),description.getText().toString(),loc,"23",locationTxt.getText().toString());
-                if(insert!=0)
-                {
-                    finish();
+
+                long insert =  db.insertNotes(title,descrip,realDate,folderId);
+                if (insert != -1){
+                    Toast.makeText(this, "Insertd successfuly ", Toast.LENGTH_SHORT).show();
                 }
-            }
+                else {
+                    Toast.makeText(this, "not Inserted", Toast.LENGTH_SHORT).show();
+                }
+
         });
 
     }
 
 
-    public boolean validate()
+   /* public boolean validate()
     {
         if(title.getText().toString().isEmpty())
         {
@@ -90,7 +110,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
         return true;
     }
-
+*/
     Geocoder geocoder;
     List<Address> addresses;
     String loc = "";

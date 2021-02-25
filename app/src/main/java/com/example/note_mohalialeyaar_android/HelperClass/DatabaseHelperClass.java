@@ -28,7 +28,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "note_id";
     public static final String COLUMN_DATE = "note_date_time";
     public static final String COLUMN_TITLE = "note_title";
-    public static final String COLUMN_DESCRIPTION = "note_description";
+    public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_IMAGE = "note_image";
     public static final String COLUMN_LOCATION = "note_location";
     public static final String COLUMN_ADDRESS = "note_address";
@@ -45,7 +45,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE IF NOT EXISTS " + NOTE_TABLE + "(" +
                 COLUMN_ID + " INTEGER NOT NULL CONSTRAINT note_pk PRIMARY KEY AUTOINCREMENT ," +
-                COLUMN_TITLE + " TEXT NOT NULL, " +
+                COLUMN_TITLE + " TEXT NOT NULL , " +
                 COLUMN_DESCRIPTION + " TEXT ," +
                 COLUMN_DATE + " TEXT ," +
                 COLUMN_IMAGE + " BLOB ," +
@@ -70,6 +70,9 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     }
 
+
+    // insert folder function
+
     public long insertFolder (String folderName)
     {
         SQLiteDatabase db = getWritableDatabase();
@@ -83,6 +86,27 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
         return result;
     }
+
+    public long insertNotes (String title, String description, String date, int folderId){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE,title);
+        cv.put(COLUMN_DESCRIPTION, description);
+        cv.put(COLUMN_DATE,date);
+        cv.put(COLUMN_FOLDER_ID,folderId);
+
+        long result = db.insert(NOTE_TABLE,null,cv);
+
+        return result;
+
+
+
+    }
+
+
+    /*
 
     public long insertNote(String title,String Desc,String location,String image,String address)
     {
@@ -101,7 +125,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         long result = db.insert(NOTE_TABLE,null,contentValues);
         return result;
     }
-
+*/
     public ArrayList<FolderModelClass> getFolderName()
     {
 
@@ -139,6 +163,37 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         return null;
     }
 
+
+    public ArrayList<NotesModelClass> getAllNotes(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<NotesModelClass> list =  new ArrayList<>();
+
+        Cursor cursor = null;
+
+        cursor = db.rawQuery("SELECT * FROM " + NOTE_TABLE + " ",null);
+        if (cursor != null){
+            while(cursor.moveToNext()){
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String description = cursor.getString(2);
+                String date = cursor.getString(3);
+                int folderID = cursor.getInt(7);
+
+                NotesModelClass model = new NotesModelClass(id,title,description,date,folderID);
+                list.add(model);
+
+            }
+        }
+      cursor.close();
+        return list;
+
+
+    }
+
+
+
+/*
+
     public ArrayList<NotesModelClass> getNotesList()
     {
 
@@ -175,6 +230,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         }
         return null;
     }
+*/
 
     public long deleteFolder(int folderId) {
         SQLiteDatabase db = getWritableDatabase();
