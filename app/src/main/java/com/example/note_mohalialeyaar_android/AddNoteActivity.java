@@ -5,19 +5,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -30,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,20 +48,24 @@ import java.util.Locale;
 
 public class AddNoteActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 2;
     EditText notetitle, notedescription;
     Button btnSave;
-    Button btn_image;
+    ImageView showImage;
     DatabaseHelperClass db;
     TextView locationTxt;
     FusedLocationProviderClient mFusedLocationClient;
 
+    private byte[] imageInByte;
+    private Bitmap imageBitmap;
+
+// store lat lng of the user
+    String loc = "";
     // Initializing other items
     // from layout file
     int PERMISSION_ID = 44;
     //ArrayList<NotesModelClass> notesDesc = new ArrayList<>();
     int folderId;
-
-
 
 
     @Override
@@ -62,16 +75,14 @@ public class AddNoteActivity extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-        folderId = getIntent().getIntExtra("folderId",1);
-
-
+        folderId = getIntent().getIntExtra("folderId", 1);
 
 
         db = new DatabaseHelperClass(this);
         notetitle = findViewById(R.id.title_note);
         notedescription = findViewById(R.id.desc_note);
         btnSave = findViewById(R.id.save);
-        btn_image = findViewById(R.id.btnpickimage);
+        showImage = findViewById(R.id.showImageView);
         locationTxt = findViewById(R.id.location);
 
         btnSave.setOnClickListener(view -> {
@@ -82,38 +93,53 @@ public class AddNoteActivity extends AppCompatActivity {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             String realDate = formatter.format(date);
 
+            //image conversion......
+            Bitmap imageToStore = imageBitmap;
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageToStore.compress(Bitmap.CompressFormat.JPEG,25,byteArrayOutputStream);
+            imageInByte = byteArrayOutputStream.toByteArray();
 
 
-                long insert =  db.insertNotes(title,descrip,realDate,folderId);
-                if (insert != -1){
-                    Toast.makeText(this, "Insertd successfuly ", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(this, "not Inserted", Toast.LENGTH_SHORT).show();
-                }
+
+
+            long insert = db.insertNotes(title, descrip, realDate, folderId,imageInByte, loc, locationTxt.getText().toString());
+            if (insert != -1) {
+                Toast.makeText(this, "Insertd successfuly ", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "not Inserted", Toast.LENGTH_SHORT).show();
+            }
 
         });
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-   /* public boolean validate()
-    {
-        if(title.getText().toString().isEmpty())
-        {
-            title.setError("Please enter value");
-        }
-        else if(description.getText().toString().isEmpty())
-        {
-            description.setError("Please enter value");
-        }
+        getMenuInflater().inflate(R.menu.add_note_menu, menu);
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
-*/
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+            case(R.id.addImageBtn):
+                Toast.makeText(this,"image button clicked", Toast.LENGTH_SHORT).show();
+
+                ActivityCompat.requestPermissions(AddNoteActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     Geocoder geocoder;
     List<Address> addresses;
-    String loc = "";
+
     private void getLastLocation() {
         // check if permissions are given
         if (checkPermissions()) {
@@ -121,10 +147,7 @@ public class AddNoteActivity extends AppCompatActivity {
             // check if location is enabled
             if (isLocationEnabled()) {
 
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
+
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -152,7 +175,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
                             try {
                                 addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                locationTxt.setText("Location: "+ addresses.get(0).getLocality());
+                                locationTxt.setText("Location: " + addresses.get(0).getFeatureName()+" "+ addresses.get(0).getThoroughfare() +"," + addresses.get(0).getPostalCode()+ ", "+ addresses.get(0).getLocality()) ;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -234,5 +257,40 @@ public class AddNoteActivity extends AppCompatActivity {
                 getLastLocation();
             }
         }
+
+        if ( requestCode == REQUEST_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent,REQUEST_CODE);
+            }
+            else {
+                Toast.makeText(this, "Do not  have permission to gallery", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try{
+
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
+
+                Uri filePath = data.getData();
+                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+
+                showImage.setImageBitmap(imageBitmap);
+            }
+
+        }catch(Exception e){
+            Toast.makeText( this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.note_mohalialeyaar_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -87,18 +88,19 @@ public class NotesList extends AppCompatActivity {
 
         });
         try{
+
             notes = helper.getAllNotes(folderID);
 
+            Log.i("TAG", "onRestart: size of the notes array " + notes.size());
             if (notes.size() > 0) {
                 // setting up folder adapter passing arguments to the contructor of folder adapter
                 notesAdapter = new NotesAdapter(NotesList.this, notes, helper);
                 int  totalFolder = notes.size();
                 listView.setLayoutManager(new LinearLayoutManager(this));
-
                 listView.setAdapter(notesAdapter);
             }
         }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "notice = "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

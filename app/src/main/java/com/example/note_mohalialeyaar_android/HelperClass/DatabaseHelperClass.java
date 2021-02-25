@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.example.note_mohalialeyaar_android.FolderModelClass;
 import com.example.note_mohalialeyaar_android.NotesModelClass;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,11 +89,14 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         return result;
     }
 
-    public long insertNotes (String title, String description, String date, int folderId){
+    public long insertNotes (String title, String description, String date, int folderId, byte[] imageinByte, String latLng, String location){
 
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
+        cv.put(COLUMN_IMAGE,imageinByte);
+        cv.put(COLUMN_LOCATION,latLng);
+        cv.put(COLUMN_ADDRESS, location);
         cv.put(COLUMN_TITLE,title);
         cv.put(COLUMN_DESCRIPTION, description);
         cv.put(COLUMN_DATE,date);
@@ -156,6 +161,9 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
                 int id = cursor.getInt(0);
                 String title = cursor.getString(1);
                 String description = cursor.getString(2);
+                String location = cursor.getString(5);
+                String address = cursor.getString(6);
+
                 String date = cursor.getString(3);
                 int folderID = cursor.getInt(7);
 

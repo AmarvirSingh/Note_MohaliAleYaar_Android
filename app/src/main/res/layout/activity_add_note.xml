@@ -61,18 +61,19 @@
 
     <TextView
         android:id="@+id/location"
+        android:text="Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         />
 
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:id="@+id/showImageView"
+    android:src="@drawable/add_image_logo_foreground"/>
 
-    <Button
-        android:id="@+id/btnpickimage"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pick Image" />
     <Button
         android:id="@+id/save"
         android:layout_gravity="center"

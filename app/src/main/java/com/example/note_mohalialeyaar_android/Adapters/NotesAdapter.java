@@ -78,7 +78,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
         holder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Note Added on - " + modelClass.getNoteDateTime() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Note Added on - " + modelClass.getNoteDateTime() + "\n" + modelClass.getNoteAddress() , Toast.LENGTH_SHORT).show();
             }
         });
 

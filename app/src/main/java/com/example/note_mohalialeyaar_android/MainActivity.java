@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView total;
     ArrayList<FolderModelClass>  folderNames =  new ArrayList<>();
-    //DatabaseHelperClass helper ;
     private int totalFolder = 0;
     DatabaseHelperClass helper;
     FolderAdapter adapter;
