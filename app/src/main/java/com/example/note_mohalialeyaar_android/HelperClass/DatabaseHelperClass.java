@@ -106,26 +106,6 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     }
 
 
-    /*
-
-    public long insertNote(String title,String Desc,String location,String image,String address)
-    {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(COLUMN_TITLE,title);
-        contentValues.put(COLUMN_DESCRIPTION,Desc);
-        Date date = new Date(); // This object contains the current date value
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        contentValues.put(COLUMN_DATE,formatter.format(date));
-        contentValues.put(COLUMN_LOCATION,location);
-        contentValues.put(COLUMN_IMAGE,image);
-        contentValues.put(COLUMN_ADDRESS,address);
-        contentValues.put(COLUMN_FOLDER_ID,4);
-        long result = db.insert(NOTE_TABLE,null,contentValues);
-        return result;
-    }
-*/
     public ArrayList<FolderModelClass> getFolderName()
     {
 
@@ -164,13 +144,13 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<NotesModelClass> getAllNotes(){
+    public ArrayList<NotesModelClass> getAllNotes(int folderId){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<NotesModelClass> list =  new ArrayList<>();
 
         Cursor cursor = null;
 
-        cursor = db.rawQuery("SELECT * FROM " + NOTE_TABLE + " ",null);
+        cursor = db.rawQuery("SELECT * FROM " + NOTE_TABLE + " WHERE "+ COLUMN_FOLDER_ID +"  = "+ String.valueOf(folderId), null);
         if (cursor != null){
             while(cursor.moveToNext()){
                 int id = cursor.getInt(0);
@@ -192,45 +172,6 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
 
 
-/*
-
-    public ArrayList<NotesModelClass> getNotesList()
-    {
-
-        try {
-            SQLiteDatabase database = getReadableDatabase();
-            Cursor cursor = null;
-            cursor = database.rawQuery("SELECT * FROM " + NOTE_TABLE + "", null);
-
-            ArrayList<NotesModelClass> arrayList = new ArrayList<>();
-            if (cursor.getCount() != 0) {
-
-                while (cursor.moveToNext()){
-                    int id = cursor.getInt(0);
-                    String title = cursor.getString(1);
-                    String desc = cursor.getString(2);
-                    String loc = cursor.getString(5);
-                    byte[] s = title.getBytes();
-                    NotesModelClass modelClass = new NotesModelClass(id,title,desc,"",loc,"",s);
-
-                    arrayList.add(modelClass);
-
-                }
-
-                cursor.close();
-
-                return arrayList;
-
-            }else {
-                return  null;
-            }
-
-        }catch(Exception e){
-            Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
-        }
-        return null;
-    }
-*/
 
     public long deleteFolder(int folderId) {
         SQLiteDatabase db = getWritableDatabase();
@@ -238,6 +179,21 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         long result = db.delete(FOLDER_TABLE,"folder_id = ?",new String[]{String.valueOf(folderId)});
 
         return result;
+    }
+
+
+    public void  deleteNotesInfolder(int folderId){
+        SQLiteDatabase db = getWritableDatabase();
+        
+        long result = db.delete(NOTE_TABLE,COLUMN_FOLDER_ID + " = ?",new String[]{String.valueOf(folderId)});
+        
+        if (result != -1){
+            Toast.makeText(context, "Delete all the respective notes ", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(context, "not deleting related notes", Toast.LENGTH_SHORT).show();
+        }
+        
     }
 
     // method to get number of notes present in the Folder

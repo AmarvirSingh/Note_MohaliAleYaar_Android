@@ -88,7 +88,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.RVViewHold
             public void onClick(DialogInterface dialog, int which) {
 
                 long result = helper.deleteFolder(modelClass.getFolderId());
-
+                helper.deleteNotesInfolder(modelClass.getFolderId());
                 if (result != -1) {
                     Toast.makeText(context, "Delete successfully", Toast.LENGTH_SHORT).show();
                     //notifyDataSetChanged();

@@ -2,6 +2,9 @@ package com.example.note_mohalialeyaar_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -53,7 +56,7 @@ public class NotesList extends AppCompatActivity {
 
         });
         try {
-            notes = helper.getAllNotes();
+            notes = helper.getAllNotes(folderID);
 
             if (notes.size() > 0) {
                 // setting up folder adapter passing arguments to the contructor of folder adapter
@@ -84,7 +87,7 @@ public class NotesList extends AppCompatActivity {
 
         });
         try{
-            notes = helper.getAllNotes();
+            notes = helper.getAllNotes(folderID);
 
             if (notes.size() > 0) {
                 // setting up folder adapter passing arguments to the contructor of folder adapter
@@ -98,4 +101,43 @@ public class NotesList extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.note_list_menu,menu);
+        MenuItem item = menu.findItem(R.id.search_bar_id_notes);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                notesAdapter.getFilter().filter(query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                notesAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+
+
 }

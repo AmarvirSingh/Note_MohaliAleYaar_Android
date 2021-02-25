@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<FolderModelClass>  folderNames =  new ArrayList<>();
     //DatabaseHelperClass helper ;
     private int totalFolder = 0;
+    DatabaseHelperClass helper;
     FolderAdapter adapter;
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.addBtn);
         total = findViewById(R.id.total);
 
-        DatabaseHelperClass helper = new DatabaseHelperClass(this);
+        helper = new DatabaseHelperClass(this);
 
         // populating the array list using the method in  database helper class
 
@@ -149,6 +150,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onRestart() {
+
+        try{
+            folderNames = helper.getFolderName();
+
+            if (folderNames.size() > 0) {
+                // setting up folder adapter passing arguments to the contructor of folder adapter
+                adapter = new FolderAdapter(MainActivity.this, folderNames, helper);
+                totalFolder = folderNames.size();
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+                recyclerView.setAdapter(adapter);
+            }
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
+        super.onRestart();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
