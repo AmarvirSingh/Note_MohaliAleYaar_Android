@@ -11,6 +11,17 @@ public class NotesModelClass {
     private byte[] noteImage;
     private  int folderID ;
 
+public NotesModelClass(){
+
+}
+
+    public NotesModelClass(String noteTitle, String noteDescription, byte[] noteImage, String noteAddress) {
+        this.noteTitle = noteTitle;
+        this.noteDescription = noteDescription;
+        this.noteImage = noteImage;
+        this.noteAddress = noteAddress;
+    }
+
     public NotesModelClass(int noteID, String noteTitle, String noteDescription, String noteDateTime, int folderID) {
         this.noteID = noteID;
         this.noteTitle = noteTitle;

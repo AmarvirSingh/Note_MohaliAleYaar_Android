@@ -23,6 +23,7 @@ import com.example.note_mohalialeyaar_android.HelperClass.DatabaseHelperClass;
 import com.example.note_mohalialeyaar_android.MapsActivity;
 import com.example.note_mohalialeyaar_android.NotesModelClass;
 import com.example.note_mohalialeyaar_android.R;
+import com.example.note_mohalialeyaar_android.UpdateActivity;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
                 Toast.makeText(context, "Note Added on - " + modelClass.getNoteDateTime() + "\n" + modelClass.getNoteAddress() , Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UpdateActivity.class);
+                intent.putExtra("noteid",modelClass.getNoteID());
+                context.startActivity(intent);
+
+            }
+        });
+
 
 
 //        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {

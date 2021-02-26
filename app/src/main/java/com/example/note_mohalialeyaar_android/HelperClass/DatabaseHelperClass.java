@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -228,4 +230,50 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
     }
 
 
+    public NotesModelClass getNoteDetail(int noteID) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        NotesModelClass model = new NotesModelClass();
+
+
+        Cursor cursor = null;
+
+        cursor = db.rawQuery("SELECT * FROM "+ NOTE_TABLE + " WHERE " + COLUMN_ID + " = "+ noteID, null);
+        if(cursor!= null){
+            while(cursor.moveToNext()){
+                String title = cursor.getString(1);
+                String desc = cursor.getString(2);
+                byte[] imageByte = cursor.getBlob(4);
+                String add = cursor.getString(6);
+
+                model = new NotesModelClass(title, desc, imageByte,add);
+
+            }
+        }
+        return  model;
+
+
+
+
+
+    }
+
+    public void updateNote(int noteID, String toString, String toString1) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE,toString );
+        cv.put(COLUMN_DESCRIPTION, toString1);
+
+        long result = db.update(NOTE_TABLE,cv,COLUMN_ID+" = ? ",new String[]{String.valueOf(noteID)});
+        if (result != -1){
+            Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(context, "not Updated successfully", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+    }
 }
