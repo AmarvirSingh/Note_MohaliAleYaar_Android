@@ -98,48 +98,56 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MapsActivity.class);
-                intent.putExtra("lat",modelClass.getNoteLocation());
+                if (modelClass.getNoteLocation() != null) {
+                    String[] array = modelClass.getNoteLocation().split(",");
+
+                    intent.putExtra("array", array);
+                }
+                context.startActivity(intent);
 
 
             }
         });
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
 
+                deleteNote(modelClass,position );
 
-//        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.i("Folder activity ", "onClick: "+ String.valueOf(modelClass.getFolderId()));
-//                deleteFolder(modelClass,position);
-//            }
-//        });
+                return true;
+            }
+        });
 
 
 
 
     }
 
-    private void deleteFolder(FolderModelClass modelClass, int position) {
+    private void deleteNote( NotesModelClass model, int position) {
 
         AlertDialog.Builder  builder = new AlertDialog.Builder(context);
         builder.setTitle("Are You Sure ??");
-        builder.setMessage("Do you want to delete "+ modelClass.getFolderName());
+        builder.setMessage("Do you want to delete "+ model.getNoteTitle());
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+    try {
 
-                long result = helper.deleteFolder(modelClass.getFolderId());
+    long result = helper.deleteNote(model.getNoteID());
 
-                if (result != -1) {
-                    Toast.makeText(context, "Delete successfully", Toast.LENGTH_SHORT).show();
-                    //notifyDataSetChanged();
-                    notifyItemRemoved(position);
-                    filerList.remove(position);
-                } else {
-                    Toast.makeText(context, "not deleted", Toast.LENGTH_SHORT).show();
-                }
+    if (result != -1) {
+        Toast.makeText(context, "Delete successfully", Toast.LENGTH_SHORT).show();
+        //notifyDataSetChanged();
+        notifyItemRemoved(position);
+        filerList.remove(position);
+    } else {
+        Toast.makeText(context, "not deleted", Toast.LENGTH_SHORT).show();
+    }
 
-
+    }catch(Exception e){
+    Toast.makeText(context, e.getMessage() , Toast.LENGTH_SHORT).show();
+}
 
 
             }
@@ -212,7 +220,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
             rowDesc = itemView.findViewById(R.id.row_note_description);
             info = itemView.findViewById(R.id.row_btn_info);
             btnMap = itemView.findViewById(R.id.row_btn_map);
-            btnMap.setOnClickListener(new View.OnClickListener() {
+          /*  btnMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String[] c =    (String[]) view.getTag();
@@ -229,7 +237,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
                     context.startActivity(intent);
                 }
             });
-
+*/
 
             itemView.setOnLongClickListener(this);
         }

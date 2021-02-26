@@ -168,7 +168,7 @@ public class AddNoteActivity extends AppCompatActivity {
 //                            latitudeTextView.setText(location.getLatitude() + "");
 //                            longitTextView.setText(location.getLatitude()) + "");
 
-                            String s = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
+                            String s = (location.getLatitude()) + "," + (location.getLongitude());
                             loc = s;
 
                             geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());

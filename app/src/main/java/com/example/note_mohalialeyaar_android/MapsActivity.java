@@ -17,6 +17,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     String lat = "0";
     String longi = "0";
+    String[] array = new String[2];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         lat = intent.getStringExtra("lat");
         longi= intent.getStringExtra("long");
+        array = getIntent().getStringArrayExtra("array");
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -45,8 +47,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng latLng = new LatLng(Double.valueOf(lat), Double.valueOf(longi));
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Note Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-    }
+        if (array != null) {
+            LatLng latLng = new LatLng(Double.valueOf(array[0]), Double.valueOf(array[1]));
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Note Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        }else{
+            return;
+        }
+        }
 }

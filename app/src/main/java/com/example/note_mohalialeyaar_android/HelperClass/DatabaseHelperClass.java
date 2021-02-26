@@ -97,7 +97,7 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_IMAGE,imageinByte);
+        cv.put(COLUMN_IMAGE,imagemTratada(imageinByte));
         cv.put(COLUMN_LOCATION,latLng);
         cv.put(COLUMN_ADDRESS, location);
         cv.put(COLUMN_TITLE,title);
@@ -112,6 +112,21 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
 
     }
+
+    // resizing the image
+    private byte[] imagemTratada(byte[] imagem_img){
+
+        while (imagem_img.length > 500000){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imagem_img, 0, imagem_img.length);
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.8), (int)(bitmap.getHeight()*0.8), true);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            imagem_img = stream.toByteArray();
+        }
+        return imagem_img;
+
+    }
+
 
 
     public ArrayList<FolderModelClass> getFolderName()
@@ -283,11 +298,11 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
 
     }
 
-    public void deleteNote(int noteID) {
+    public long  deleteNote(int noteID) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.delete(NOTE_TABLE,COLUMN_ID +" = ? ",new String[]{String.valueOf(noteID)});
-
+        long result = db.delete(NOTE_TABLE,COLUMN_ID +" = ? ",new String[]{String.valueOf(noteID)});
+return  result;
 
     }
 }
