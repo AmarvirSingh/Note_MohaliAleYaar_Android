@@ -94,6 +94,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.RVNotesViewH
             }
         });
 
+        holder.btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("lat",modelClass.getNoteLocation());
+
+
+            }
+        });
+
 
 
 //        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {

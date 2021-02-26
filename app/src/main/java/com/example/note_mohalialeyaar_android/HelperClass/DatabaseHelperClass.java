@@ -3,6 +3,7 @@ package com.example.note_mohalialeyaar_android.HelperClass;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -241,12 +242,17 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         cursor = db.rawQuery("SELECT * FROM "+ NOTE_TABLE + " WHERE " + COLUMN_ID + " = "+ noteID, null);
         if(cursor!= null){
             while(cursor.moveToNext()){
+                int id = cursor.getInt(0);
                 String title = cursor.getString(1);
                 String desc = cursor.getString(2);
+                String date = cursor.getString(3);
                 byte[] imageByte = cursor.getBlob(4);
+                String loc = cursor.getString(5);
                 String add = cursor.getString(6);
+                int folderID = cursor.getInt(7);
 
-                model = new NotesModelClass(title, desc, imageByte,add);
+                model = new NotesModelClass(id,title,desc,date,loc,add,imageByte,folderID);
+               // model = new NotesModelClass(title, desc, imageByte,add);
 
             }
         }
@@ -273,6 +279,14 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
             Toast.makeText(context, "not Updated successfully", Toast.LENGTH_SHORT).show();
         }
 
+
+
+    }
+
+    public void deleteNote(int noteID) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(NOTE_TABLE,COLUMN_ID +" = ? ",new String[]{String.valueOf(noteID)});
 
 
     }
