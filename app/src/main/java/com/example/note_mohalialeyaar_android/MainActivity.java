@@ -118,22 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
                             adapter.notifyDataSetChanged();
 
-
-
-
-
-
                         }else {
                             //     Toast.makeText(MainActivity.this, "Data not added ", Toast.LENGTH_SHORT).show();
-
-
                             etFolderName.setError("name Already talken");
                             etFolderName.requestFocus();
                             return;
 
 
                         }
-
 
 
                     }
@@ -202,25 +194,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch(item.getItemId()){
-            case(R.id.deleteBtn):
-                Toast.makeText(this,"Delete button clicked", Toast.LENGTH_SHORT).show();
-                break;
-            case(R.id.folderBtn):
-                Toast.makeText(this, "Show Folder Button Clicked ", Toast.LENGTH_SHORT).show();
-                break;
-            //case (R.id.search_bar_id):
-
-
-
-            default:
-                break;
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-}
+  }

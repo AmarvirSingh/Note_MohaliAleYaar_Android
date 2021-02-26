@@ -3,16 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- "Mark Favorite", should appear as action button if possible -->
     <!-- "Mark Favorite", should appear as action button if possible -->
-    <item
-        android:id="@+id/deleteBtn"
-        android:title="Delete All Notes "
-        app:showAsAction="never" />
-
-    <!-- Settings, should always be in the overflow -->
-    <item
-        android:id="@+id/folderBtn"
-        android:title="Show Folders"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/search_bar_id"
